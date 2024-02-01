@@ -1,39 +1,75 @@
 import tkinter as tk
+from functools import partial
+
+class Shopping_Cart():
+
+    def __init__(self):
+        self.cart = []
+    
+    def add(self, item):
+        self.cart.append(item)
+        print(f"Added {item} to cart, see?: {self.cart}")
+        return True
+
+    def remove(self, item):
+        if item in self.cart():
+            self.cart.remove(item)
+            return True
+        return False
+    
+def shopping_cart_item(master, item, qty, price, borderwidth=0):
+    frame = tk.Frame(master=master, relief=tk.GROOVE, borderwidth=borderwidth)
+    item = tk.Label(height="2", master=frame, text=item, width=30)
+    qty = tk.Label(master=frame, text=qty, width=5)
+    price = tk.Label(master=frame, text=price, width=5)
+    item.grid(row=0, column=0)
+    qty.grid(row=0, column=1)
+    price.grid(row=0, column=2)
+    return frame
+
+shopping_cart = Shopping_Cart()
+def add_to_cart(i):
+    print(i, shopping_cart.cart)
 
 def main():
-    window = tk.Tk()
+    root = tk.Tk()
+    root.title("PoS by Justyn Shelby")
+    root.geometry("1280x720")
 
-    information_frame = tk.Frame(width="150", relief=tk.GROOVE, borderwidth=2)
-    title = tk.Label(text="PoS Program", width="150", master=information_frame)
+    information_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
+    title = tk.Label(master=information_frame, text="PoS Program", height="1", font=("Arial", 25))
     title.pack()
 
-    shoppingcart_frame = tk.Frame(width="40", height="100", relief=tk.GROOVE, borderwidth=2)
-    sctitle = tk.Label(text="Shopping Cart", master=shoppingcart_frame)
-    sctitle.pack()
-    sclabels = tk.Frame(master=shoppingcart_frame, relief=tk.GROOVE, borderwidth=1)
-    sclabels_item = tk.Label(master=sclabels, text="Item", width=30)
-    sclabels_qty = tk.Label(master=sclabels, text="Qty", width=5)
-    sclabels_price = tk.Label(master=sclabels, text="Price", width=5)
-    sclabels_item.pack(side=tk.LEFT)
-    sclabels_qty.pack(side=tk.LEFT)
-    sclabels_price.pack(side=tk.LEFT)
+    shoppingcart_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
+    sctitle = tk.Label(master=shoppingcart_frame, text="Shopping Cart")
+    sctitle.pack(side=tk.TOP)
+    # Title
+    sclabel = shopping_cart_item(shoppingcart_frame, "Item", "Qty", "Price", borderwidth=1)
+    sclabel.pack()
+    # Items
+    shoppingcartitems_frame = tk.Frame(master=shoppingcart_frame, background="ivory")
+    shoppingcartitems_frame.pack(side=tk.TOP)
+    for i in range(10):
+        shopping_cart_item(shoppingcartitems_frame, f"Item {i + 1}", "1", "5.00").grid(column=0, row=i)
+    # Total
     sctotal = tk.Frame(master=shoppingcart_frame, relief=tk.GROOVE, borderwidth=1)
     sctotal_label = tk.Label(master=sctotal, text="Total", width=30, height=2)
     sctotal_price = tk.Label(master=sctotal, text="$COST", width=10, height=2)
-    sctotal_label.pack(side=tk.LEFT)
-    sctotal_price.pack(side=tk.LEFT)
+    sctotal_label.grid(row=0, column=0)
+    sctotal_price.grid(row=0, column=1)
+    #sctotal.grid(column=0, row=2)
     sctotal.pack(side=tk.BOTTOM)
-    sclabels.pack()
-    sc_fill = tk.Label(master=shoppingcart_frame, height="40", text=" ")
-    sc_fill.pack(fill="both", expand=False)
 
-    product_select_frame = tk.Frame(width="107", relief=tk.GROOVE, borderwidth=2)
+
+    product_select_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
     page_select_frame = tk.Frame(master=product_select_frame, relief=tk.GROOVE, borderwidth=2)
-    pagstitle = tk.Label(master=page_select_frame, text="Page Selection", width="107")
-    pagstitle.pack()
-    page_select_frame.pack()
-    prostitle = tk.Label(master=product_select_frame, text="Product Selection", width="107")
-    prostitle.pack()
+    pagstitle = tk.Label(master=page_select_frame, text="Page Selection")
+    pagstitle.pack(fill="x")
+    page_select_frame.pack(fill="x")
+    # Products Label
+    prostitle = tk.Label(master=product_select_frame, text="Product Selection")
+    prostitle.pack(fill="x")
+    # Products
     product_grid_frame = tk.Frame(master=product_select_frame, width="107")
     product_grid_frame.pack()
     for i in range(10):
@@ -43,19 +79,19 @@ def main():
             height="5",
             master=product_grid_frame,
             relief=tk.RAISED,
-            borderwidth=1
+            borderwidth=1,
+            command=partial(shopping_cart.add, i + 1)
         )
-        product.grid(column=i % 5, row=i // 5, padx=5, pady=5)
-    product_select_fill = tk.Label(master=product_select_frame, text=" ", height=40)
-    product_select_fill.pack()
+        product.grid(column=i % 5, row=i // 5, padx=3, pady=3)
 
-    information_frame.pack(side=tk.TOP)
-    shoppingcart_frame.pack(side=tk.LEFT, fill="y", expand=False)
-    product_select_frame.pack(side=tk.RIGHT)
+    information_frame.grid(row=0, column=0, columnspan=2, sticky="new", padx="3", pady="3")
+    shoppingcart_frame.grid(row=1, column=0, sticky="nsw", padx="3", pady="3")
+    product_select_frame.grid(row=1, column=1, sticky="nsew", padx="3", pady="3")
 
-    window.mainloop()
+    root.columnconfigure(1, weight=3)
+    root.rowconfigure(1, weight=1)
+    root.columnconfigure(0, weight=1)
+    root.mainloop()
     
-
-
 if __name__ == "__main__":
     main()
