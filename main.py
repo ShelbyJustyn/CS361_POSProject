@@ -17,6 +17,14 @@ class Shopping_Cart():
             return True
         return False
     
+class Product():
+
+    def __init__(self, name: str, sku: int, price: float, quantity: int):
+        self.name = name
+        self.sku = sku
+        self.price = price
+        self.quantity = quantity
+    
 def shopping_cart_item(master, item, qty, price, borderwidth=0):
     frame = tk.Frame(master=master, relief=tk.GROOVE, borderwidth=borderwidth)
     item = tk.Label(height="2", master=frame, text=item, width=30)
@@ -30,6 +38,17 @@ def shopping_cart_item(master, item, qty, price, borderwidth=0):
 shopping_cart = Shopping_Cart()
 def add_to_cart(i):
     print(i, shopping_cart.cart)
+
+inventory = [Product("Apple", 1, 0.99, 5),
+            Product("Banana", 2, 0.25, 10),
+            Product("Strawberry", 3, 1.10, 5),
+            Product("Lettuce", 4, 0.35, 10),
+            Product("Potato", 5, 1.50, 5),
+            Product("Celery", 6, 2.80, 10),
+            Product("Carrot", 7, 0.20, 5),
+            Product("Orange", 8, 0.40, 8),
+            Product("Avocado", 9, 1.25, 1),
+            Product("Blueberry", 10, 0.10, 3)]
 
 def main():
     root = tk.Tk()
@@ -72,17 +91,17 @@ def main():
     # Products
     product_grid_frame = tk.Frame(master=product_select_frame, width="107")
     product_grid_frame.pack()
-    for i in range(10):
-        product = tk.Button(
-            text=f"Product {i + 1}",
+    for i, product in enumerate(inventory):
+        product_button = tk.Button(
+            text=product.name,
             width="15",
             height="5",
             master=product_grid_frame,
             relief=tk.RAISED,
             borderwidth=1,
-            command=partial(shopping_cart.add, i + 1)
+            command=partial(shopping_cart.add, product)
         )
-        product.grid(column=i % 5, row=i // 5, padx=3, pady=3)
+        product_button.grid(column=i % 5, row=i // 5, padx=3, pady=3)
 
     information_frame.grid(row=0, column=0, columnspan=2, sticky="new", padx="3", pady="3")
     shoppingcart_frame.grid(row=1, column=0, sticky="nsw", padx="3", pady="3")
