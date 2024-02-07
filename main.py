@@ -5,15 +5,18 @@ class Shopping_Cart():
 
     def __init__(self):
         self.cart = []
+        self.total = 0
     
     def add(self, item):
         self.cart.append(item)
-        print(f"Added {item} to cart, see?: {self.cart}")
+        print(f"Added {item.name} to cart, see?: {self.cart}")
+        self.total += item.price
         return True
 
     def remove(self, item):
         if item in self.cart():
             self.cart.remove(item)
+            self.total -= item.price
             return True
         return False
     
@@ -37,7 +40,7 @@ def shopping_cart_item(master, item, qty, price, borderwidth=0):
 
 shopping_cart = Shopping_Cart()
 def add_to_cart(i):
-    print(i, shopping_cart.cart)
+    shopping_cart.add(i)
 
 inventory = [Product("Apple", 1, 0.99, 5),
             Product("Banana", 2, 0.25, 10),
@@ -66,19 +69,20 @@ def main():
     sclabel = shopping_cart_item(shoppingcart_frame, "Item", "Qty", "Price", borderwidth=1)
     sclabel.pack()
     # Items
-    shoppingcartitems_frame = tk.Frame(master=shoppingcart_frame, background="ivory")
+    shoppingcartitems_frame = tk.Canvas(master=shoppingcart_frame, background="ivory")
+    shoppingcartitems_frame_sb = tk.Scrollbar(shoppingcartitems_frame, orient="vertical", command=shoppingcartitems_frame.yview)
+    shoppingcartitems_frame.configure(yscrollcommand=shoppingcartitems_frame_sb.set)
     shoppingcartitems_frame.pack(side=tk.TOP)
-    for i in range(10):
-        shopping_cart_item(shoppingcartitems_frame, f"Item {i + 1}", "1", "5.00").grid(column=0, row=i)
+    for i, item in enumerate(shopping_cart.cart):
+        shopping_cart_item(shoppingcartitems_frame, item.name, "1", item.price).grid(column=0, row=i)
     # Total
     sctotal = tk.Frame(master=shoppingcart_frame, relief=tk.GROOVE, borderwidth=1)
     sctotal_label = tk.Label(master=sctotal, text="Total", width=30, height=2)
-    sctotal_price = tk.Label(master=sctotal, text="$COST", width=10, height=2)
+    sctotal_price = tk.Label(master=sctotal, text=shopping_cart.total, width=10, height=2)
     sctotal_label.grid(row=0, column=0)
     sctotal_price.grid(row=0, column=1)
     #sctotal.grid(column=0, row=2)
     sctotal.pack(side=tk.BOTTOM)
-
 
     product_select_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
     page_select_frame = tk.Frame(master=product_select_frame, relief=tk.GROOVE, borderwidth=2)
@@ -113,4 +117,6 @@ def main():
     root.mainloop()
     
 if __name__ == "__main__":
+    for item in inventory:
+        add_to_cart(item)
     main()
