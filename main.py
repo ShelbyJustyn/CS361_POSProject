@@ -124,20 +124,6 @@ class Shopping_Cart_Item():
 
 shopping_cart_app = Shopping_Cart_App(root, shopping_cart)
 
-def add_to_cart(i):
-    shopping_cart.add(i)
-
-inventory = [Product("Apple", 1, 0.99, 5),
-            Product("Banana", 2, 0.25, 10),
-            Product("Strawberry", 3, 1.10, 5),
-            Product("Lettuce", 4, 0.35, 10),
-            Product("Potato", 5, 1.50, 5),
-            Product("Celery", 6, 2.80, 10),
-            Product("Carrot", 7, 0.20, 5),
-            Product("Orange", 8, 0.40, 8),
-            Product("Avocado", 9, 1.25, 1),
-            Product("Blueberry", 10, 0.10, 3)]
-
 def main():
     information_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
     title = tk.Label(master=information_frame, text="PoS Program", height="1", font=("Arial", 25))
@@ -179,7 +165,29 @@ def main():
     root.mainloop()
     
 if __name__ == "__main__":
-    for item in inventory:
-        for i in range(1):
-            add_to_cart(item)
+    inventory = [Product("Apple", 1, 0.99, 5),
+                Product("Banana", 2, 0.25, 10),
+                Product("Strawberry", 3, 1.10, 5),
+                Product("Lettuce", 4, 0.35, 10),
+                Product("Potato", 5, 1.50, 5),
+                Product("Celery", 6, 2.80, 10),
+                Product("Carrot", 7, 0.20, 5),
+                Product("Orange", 8, 0.40, 8),
+                Product("Avocado", 9, 1.25, 1),
+                Product("Blueberry", 10, 0.10, 3)]
+    
+    """inventory += [Product("Apple", 11, 0.99, 5),
+                Product("Banana", 12, 0.25, 10),
+                Product("Strawberry", 13, 1.10, 5),
+                Product("Lettuce", 14, 0.35, 10),
+                Product("Potato", 15, 1.50, 5),
+                Product("Celery", 16, 2.80, 10),
+                Product("Carrot", 17, 0.20, 5),
+                Product("Orange", 18, 0.40, 8),
+                Product("Avocado", 19, 1.25, 1),
+                Product("Blueberry", 110, 0.10, 3)]"""
+
+    """for item in inventory:
+        shopping_cart.add(item)"""
+    
     main()
