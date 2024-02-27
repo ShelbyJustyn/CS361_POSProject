@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from functools import partial
+from time import sleep
 
 root = tk.Tk()
 root.title("PoS by Justyn Shelby")
@@ -98,6 +99,11 @@ def edit_quantity(item, event):
         if new_qty_int < 0:
             pass
         else:
+            if new_qty_int == 0: 
+                warning = tk.Toplevel(root)
+                warning.geometry(f"128x36+{root.winfo_pointerx()- 20}+{root.winfo_pointery() - 85}")
+                tk.Label(warning, text=f"{item.name} deleted!").pack()
+                warning.after(750, lambda:warning.destroy())
             difference = new_qty_int - item.qty
             item.qty = new_qty_int
             shopping_cart.update(item.price * difference)
@@ -108,7 +114,7 @@ def shopping_cart_item_frame(item, master, borderwidth=0):
     frame = tk.Frame(master=master, relief=tk.GROOVE, borderwidth=borderwidth)
     tk.Label(height="2", master=frame, text=item.name, width=25).grid(row=0, column=0)
     quantity = tk.Label(master=frame, text=item.qty, width=5)
-    quantity.bind("<Button-1>", partial(edit_quantity, item)) # partial(edit_quantity), item
+    quantity.bind("<Button-1>", partial(edit_quantity, item))
     quantity.grid(row=0, column=1)
     total_price = f"{item.price*item.qty:.2f}" if type(item.qty) == int else item.price
     tk.Label(master=frame, text=total_price, width=10).grid(row=0, column=2)
@@ -124,10 +130,34 @@ class Shopping_Cart_Item():
 
 shopping_cart_app = Shopping_Cart_App(root, shopping_cart)
 
+def startup_popup():
+    popup = tk.Toplevel(root)
+    popup.geometry("1280x360")
+    popup.title = ("Welcome!")
+    tk.Label(popup, text="Welcome to a simple Point of Sale program by Justyn Shelby\n\n \
+            This program allows you to select available items,\n total them up, and complete and log a sale!", 
+            font=("Arial", 36)).pack()
+    tk.Label(popup, text="\n\nCurrent features include product selection and automated shopping cart",
+             font=("Arial", 18)).pack()
+    
+def help_popup():
+    popup = tk.Toplevel(root)
+    popup.geometry("720x360")
+    popup.title = ("Help")
+    tk.Label(popup, text="Help Guide", font=("Arial", 36)).pack()
+    tk.Label(popup, text="\nTo use the product selection section:\nSelect a product to add it to the cart").pack()
+    tk.Label(popup, text="\nTo use the shopping cart section:\nSelect the quantity of an item to edit it\nChange the quantity to 0 to remove it from the cart\nThe total and shopping cart order is automatically updated").pack()
+    tk.Label(popup, text="\nStep by Step guide to complete a transaction:\nSelect all requested items from the product selection panel\nEnsure all items and quantities are correct\nSelect the complete sale button to finalize the transaction (to be implemented)").pack()
+
+
 def main():
+    startup_popup()
+
     information_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
     title = tk.Label(master=information_frame, text="PoS Program", height="1", font=("Arial", 25))
-    title.pack()
+    title.grid(row=0, column=0)
+    button = tk.Button(master=information_frame, text="Help", width=2, height=2, relief=tk.RAISED, borderwidth = 1, command=help_popup).grid(row=0, column=1)
+    information_frame.columnconfigure(0, weight=3)
 
     product_select_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
     page_select_frame = tk.Frame(master=product_select_frame, relief=tk.GROOVE, borderwidth=2)
