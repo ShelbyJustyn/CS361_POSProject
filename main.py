@@ -2,9 +2,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from functools import partial
 from time import sleep
+from datetime import datetime
+import json
 
 root = tk.Tk()
-root.title("PoS by Justyn Shelby")
+root.title("Point of Sale by Justyn Shelby")
 root.geometry("1280x720")
 
 class Shopping_Cart():
@@ -34,6 +36,9 @@ class Shopping_Cart():
     def update(self, difference):
         self.total += difference
         self.cart.sort(key = lambda x: x.price * x.qty, reverse=True)
+
+    def clear(self):
+        self.__init__()
 
 shopping_cart = Shopping_Cart()
     
@@ -69,6 +74,8 @@ class Shopping_Cart_App():
         tk.Label(master=total_frame, text="Total", width=30, height=2).grid(row=0, column=0)
         tk.Label(master=total_frame, text=f"${self.shopping_cart.total:.2f}", width=10, height=2).grid(row=0, column=1)
         items_frame.pack()
+        total_button = tk.Button(master=frame, text="Finalize", width="38", height="2", relief=tk.RAISED, borderwidth=1, command=self.log)
+        total_button.pack(side=tk.BOTTOM)
         total_frame.pack(side=tk.BOTTOM)
         page_buttons.pack(side=tk.BOTTOM)
         self.frame = frame
@@ -87,6 +94,29 @@ class Shopping_Cart_App():
     def reload(self):
         self.frame.destroy()
         self._reload()
+
+    def log(self):
+        cur_date = datetime.now().date().strftime("%Y-%m-%d")
+        cur_time = datetime.now().time().strftime("%H:%M:%S")
+        log = {
+            "transaction_date": cur_date,
+            "transaction_time": cur_time,
+            "transaction_total": float(f"{shopping_cart.total:.2f}"),
+            "items_sold": []
+            }
+        for item in shopping_cart.cart:
+            item_sold = {"name": item.name,
+                         "sku": item.sku,
+                         "price": item.price,
+                         "qty_sold": item.qty}
+            log["items_sold"].append(item_sold)
+        with open(f"processing/log_{cur_date}_{cur_time}", "w") as file:
+            json.dump(log, file, indent=1)
+        self.clear()
+
+    def clear(self):
+        shopping_cart.clear()
+        self.reload()
 
 def edit_quantity(item, event):
     new_qty = tk.StringVar()
@@ -134,7 +164,7 @@ def startup_popup():
     popup = tk.Toplevel(root)
     popup.geometry("1280x360")
     popup.title = ("Welcome!")
-    tk.Label(popup, text="Welcome to a simple Point of Sale program by Justyn Shelby\n\n \
+    tk.Label(popup, text="Welcome to a simple point of sale program by Justyn Shelby\n\n \
             This program allows you to select available items,\n total them up, and complete and log a sale!", 
             font=("Arial", 36)).pack()
     tk.Label(popup, text="\n\nCurrent features include product selection and automated shopping cart",
@@ -151,10 +181,10 @@ def help_popup():
 
 
 def main():
-    startup_popup()
+    #startup_popup()
 
     information_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
-    title = tk.Label(master=information_frame, text="PoS Program", height="1", font=("Arial", 25))
+    title = tk.Label(master=information_frame, text="Point of Sale Program", height="1", font=("Arial", 25))
     title.grid(row=0, column=0)
     button = tk.Button(master=information_frame, text="Help", width=2, height=2, relief=tk.RAISED, borderwidth = 1, command=help_popup).grid(row=0, column=1)
     information_frame.columnconfigure(0, weight=3)
