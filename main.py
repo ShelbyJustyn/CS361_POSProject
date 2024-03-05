@@ -159,6 +159,83 @@ class Shopping_Cart_Item():
         self.price = price
 
 shopping_cart_app = Shopping_Cart_App(root, shopping_cart)
+product_select_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
+
+class ProductsFrame():
+
+    def __init__(self):
+        self.page_select_frame = tk.Frame(master=product_select_frame, relief=tk.GROOVE, borderwidth=2)
+        tk.Button(master=self.page_select_frame, text="Product Select", width=45, height=2, relief=tk.RAISED, command=partial(self._switch_page, "Products")).pack(side=tk.LEFT)
+        tk.Button(master=self.page_select_frame, text="Totals", width=45, height=2, relief=tk.RAISED, command=partial(self._switch_page, "Totals")).pack(side=tk.RIGHT)
+        self.page_select_frame.pack(fill="x")
+
+        self.current_page = "Products"
+        self.total = None
+
+        # Product Select page default
+        self.product_grid_frame = tk.Frame(master=product_select_frame, width="107")
+        self.product_select()
+
+    def _add_to_cart(self, product):
+        shopping_cart.add(product)
+        shopping_cart_app.reload()
+        
+    def product_select(self):
+        self.product_grid_frame = tk.Frame(master=product_select_frame, width="107")
+        self.title = tk.Label(master=product_select_frame, text="Product Selection")
+        self.title.pack(fill="x")
+        for i, product in enumerate(inventory):
+            product_button = tk.Button(
+                text=product.name,
+                width="15",
+                height="5",
+                master=self.product_grid_frame,
+                relief=tk.RAISED,
+                borderwidth=1,
+                command=partial(self._add_to_cart, product)
+            )
+            product_button.grid(column=i % 5, row=i // 5, padx=3, pady=3)
+        self.product_grid_frame.pack()
+
+    def totals(self):
+        self.product_grid_frame = tk.Frame(master=product_select_frame, width="107")
+        self.title = tk.Label(master=product_select_frame, text="Totals")
+        self.title.pack(fill="x")
+        with open("totals.json", "r") as file:
+            data = file.read()
+            totals = json.loads(data)
+        for i, product in enumerate(totals["totalAmounts"]):
+            product_button = tk.Button(
+                text=f"{product['name']}\n{product['total']}",
+                width="15",
+                height="5",
+                master=self.product_grid_frame,
+                relief=tk.RAISED,
+                borderwidth=1,
+                command=partial(self._add_to_cart, product)
+            )
+            product_button.grid(column=i % 5, row=i // 5, padx=3, pady=3)
+        self.total = tk.Label(master=product_select_frame, text=f"${totals['totalRevenue']}")
+        self.total.pack(side=tk.BOTTOM)
+        self.product_grid_frame.pack()
+
+    def reload(self):
+        self.__init__()
+
+    def _switch_page(self, page):
+        if self.current_page == page:
+            return
+        if self.total:
+            self.total.destroy()
+        self.title.destroy()
+        self.product_grid_frame.destroy()
+        if self.current_page == "Products":
+            self.current_page = "Totals"
+            self.totals()
+        else:
+            self.current_page = "Products"
+            self.product_select()
+
 
 def startup_popup():
     popup = tk.Toplevel(root)
@@ -179,7 +256,6 @@ def help_popup():
     tk.Label(popup, text="\nTo use the shopping cart section:\nSelect the quantity of an item to edit it\nChange the quantity to 0 to remove it from the cart\nThe total and shopping cart order is automatically updated").pack()
     tk.Label(popup, text="\nStep by Step guide to complete a transaction:\nSelect all requested items from the product selection panel\nEnsure all items and quantities are correct\nSelect the complete sale button to finalize the transaction (to be implemented)").pack()
 
-
 def main():
     #startup_popup()
 
@@ -189,31 +265,8 @@ def main():
     button = tk.Button(master=information_frame, text="Help", width=2, height=2, relief=tk.RAISED, borderwidth = 1, command=help_popup).grid(row=0, column=1)
     information_frame.columnconfigure(0, weight=3)
 
-    product_select_frame = tk.Frame(relief=tk.GROOVE, borderwidth=2)
-    page_select_frame = tk.Frame(master=product_select_frame, relief=tk.GROOVE, borderwidth=2)
-    pagstitle = tk.Label(master=page_select_frame, text="Page Selection")
-    pagstitle.pack(fill="x")
-    page_select_frame.pack(fill="x")
-    # Products Label
-    prostitle = tk.Label(master=product_select_frame, text="Product Selection")
-    prostitle.pack(fill="x")
     # Products
-    product_grid_frame = tk.Frame(master=product_select_frame, width="107")
-    product_grid_frame.pack()
-    def add_to_cart(i):
-        shopping_cart.add(i)
-        shopping_cart_app.reload()
-    for i, product in enumerate(inventory):
-        product_button = tk.Button(
-            text=product.name,
-            width="15",
-            height="5",
-            master=product_grid_frame,
-            relief=tk.RAISED,
-            borderwidth=1,
-            command=partial(add_to_cart, product)
-        )
-        product_button.grid(column=i % 5, row=i // 5, padx=3, pady=3)
+    products_frame = ProductsFrame()
 
     information_frame.grid(row=0, column=0, columnspan=2, sticky="new", padx="3", pady="3")
     shopping_cart_app.reload()

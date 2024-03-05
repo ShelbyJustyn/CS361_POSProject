@@ -1,45 +1,45 @@
 {
- "totalAmounts": [
-  {
-   "name": "Apple",
-   "total": 0
-  },
-  {
-   "name": "Banana",
-   "total": 0
-  },
-  {
-   "name": "Strawberry",
-   "total": 0
-  },
-  {
-   "name": "Lettuce",
-   "total": 0
-  },
-  {
-   "name": "Potato",
-   "total": 0
-  },
-  {
-   "name": "Celery",
-   "total": 0
-  },
-  {
-   "name": "Carrot",
-   "total": 0
-  },
-  {
-   "name": "Orange",
-   "total": 0
-  },
-  {
-   "name": "Avocado",
-   "total": 0
-  },
-  {
-   "name": "Blueberry",
-   "total": 0
-  }
- ],
- "totalRevenue": 0.0
+    "totalAmounts": [
+        {
+            "name": "Apple",
+            "total": 2
+        },
+        {
+            "name": "Banana",
+            "total": 2
+        },
+        {
+            "name": "Strawberry",
+            "total": 2
+        },
+        {
+            "name": "Lettuce",
+            "total": 0
+        },
+        {
+            "name": "Potato",
+            "total": 0
+        },
+        {
+            "name": "Celery",
+            "total": 0
+        },
+        {
+            "name": "Carrot",
+            "total": 1
+        },
+        {
+            "name": "Orange",
+            "total": 3
+        },
+        {
+            "name": "Avocado",
+            "total": 0
+        },
+        {
+            "name": "Blueberry",
+            "total": 0
+        }
+    ],
+    "totalRevenue": 6.08
 }
