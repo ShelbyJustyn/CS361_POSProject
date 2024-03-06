@@ -2,11 +2,11 @@
     "totalAmounts": [
         {
             "name": "Apple",
-            "total": 2
+            "total": 3
         },
         {
             "name": "Banana",
-            "total": 2
+            "total": 3
         },
         {
             "name": "Strawberry",
@@ -26,11 +26,11 @@
         },
         {
             "name": "Carrot",
-            "total": 1
+            "total": 7
         },
         {
             "name": "Orange",
-            "total": 3
+            "total": 2
         },
         {
             "name": "Avocado",
@@ -41,5 +41,5 @@
             "total": 0
         }
     ],
-    "totalRevenue": 6.08
+    "totalRevenue": 8.120000000000001
 }

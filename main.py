@@ -215,7 +215,7 @@ class ProductsFrame():
                 command=partial(self._add_to_cart, product)
             )
             product_button.grid(column=i % 5, row=i // 5, padx=3, pady=3)
-        self.total = tk.Label(master=product_select_frame, text=f"${totals['totalRevenue']}")
+        self.total = tk.Label(master=product_select_frame, text=f"${totals['totalRevenue']:.2f}")
         self.total.pack(side=tk.BOTTOM)
         self.product_grid_frame.pack()
 
