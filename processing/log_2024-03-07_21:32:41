@@ -1,0 +1,31 @@
+{
+ "transaction_date": "2024-03-07",
+ "transaction_time": "21:32:41",
+ "transaction_total": 15.1,
+ "items_sold": [
+  {
+   "name": "Carrot",
+   "sku": 7,
+   "price": 0.2,
+   "qty_sold": 50
+  },
+  {
+   "name": "Strawberry",
+   "sku": 3,
+   "price": 1.1,
+   "qty_sold": 3
+  },
+  {
+   "name": "Banana",
+   "sku": 2,
+   "price": 0.25,
+   "qty_sold": 4
+  },
+  {
+   "name": "Orange",
+   "sku": 8,
+   "price": 0.4,
+   "qty_sold": 2
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+{
+ "transaction_date": "2024-03-07",
+ "transaction_time": "15:07:54",
+ "transaction_total": 14.28,
+ "items_sold": [
+  {
+   "name": "Carrot",
+   "sku": 7,
+   "price": 0.2,
+   "qty_sold": 30
+  },
+  {
+   "name": "Strawberry",
+   "sku": 3,
+   "price": 1.1,
+   "qty_sold": 3
+  },
+  {
+   "name": "Apple",
+   "sku": 1,
+   "price": 0.99,
+   "qty_sold": 2
+  },
+  {
+   "name": "Avocado",
+   "sku": 9,
+   "price": 1.25,
+   "qty_sold": 1
+  },
+  {
+   "name": "Orange",
+   "sku": 8,
+   "price": 0.4,
+   "qty_sold": 2
+  },
+  {
+   "name": "Lettuce",
+   "sku": 4,
+   "price": 0.35,
+   "qty_sold": 2
+  },
+  {
+   "name": "Banana",
+   "sku": 2,
+   "price": 0.25,
+   "qty_sold": 1
+  }
+ ]
+}
